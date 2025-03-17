@@ -25,7 +25,7 @@ public class Task extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TaskStatus status = TaskStatus.TODO;
+    @Column(name = "status", nullable = false)
+    private int statusValue = TaskStatus.TODO.getValue();
+
 }

@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Setter
 public abstract class BaseEntity {
     @CreationTimestamp
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
 
     @Column(updatable = false)
@@ -28,8 +28,7 @@ public abstract class BaseEntity {
     @Column
     private String updatedBy;
 
-    @UpdateTimestamp
-    @Column(nullable = true, updatable = true)
+    @Column(nullable = true)
     private LocalDateTime deleteAt;
 
     @PrePersist
