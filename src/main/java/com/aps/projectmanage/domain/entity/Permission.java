@@ -1,28 +1,21 @@
 package com.aps.projectmanage.domain.entity;
 
+import com.aps.projectmanage.domain.constant.PermissionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "permissions")
 @Getter
 @Setter
-public class Permission extends BaseEntity {
+public class Permission extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false, length = 50)
-    private String name;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Column(unique = true, nullable = false)
+    private int permissionValue;
 
 }
-

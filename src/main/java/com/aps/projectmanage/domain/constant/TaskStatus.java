@@ -12,5 +12,4 @@ public enum TaskStatus {
 
     private final int value;
     private final String label;
-    }
 }
