@@ -17,9 +17,8 @@ public class Role extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true, nullable = false, length = 50)
-    private RoleName name = RoleName.USER;
+    @Column(name = "role_value", nullable = false, unique = true)
+    private int roleValue = RoleName.USER.getValue();
 
 }
 

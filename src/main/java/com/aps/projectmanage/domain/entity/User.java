@@ -1,5 +1,6 @@
 package com.aps.projectmanage.domain.entity;
 
+import com.aps.projectmanage.domain.constant.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,5 +25,9 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String fullName;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = true)
+    private Role role;
 
 }
