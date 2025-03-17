@@ -28,8 +28,7 @@ public abstract class BaseEntity {
     @Column
     private String updatedBy;
 
-    @UpdateTimestamp
-    @Column(nullable = true, updatable = true)
+    @Column(nullable = true)
     private LocalDateTime deleteAt;
 
     @PrePersist
