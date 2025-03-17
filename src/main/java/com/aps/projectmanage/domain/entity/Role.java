@@ -21,7 +21,5 @@ public class Role extends BaseEntity {
     @Column(unique = true, nullable = false, length = 50)
     private RoleName name = RoleName.USER;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<RolePermission> rolePermissions = new HashSet<>();
 }
 

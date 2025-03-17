@@ -1,6 +1,5 @@
 package com.aps.projectmanage.domain.entity;
 
-import com.aps.projectmanage.domain.constant.UserStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,7 +25,4 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String fullName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserStatus status = UserStatus.ACTIVE;
 }

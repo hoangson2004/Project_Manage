@@ -28,6 +28,10 @@ public abstract class BaseEntity {
     @Column
     private String updatedBy;
 
+    @UpdateTimestamp
+    @Column(nullable = true, updatable = true)
+    private LocalDateTime deleteAt;
+
     @PrePersist
     public void prePersist() {
         String currentUser = getCurrentUser();

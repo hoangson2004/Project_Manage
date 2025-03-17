@@ -24,7 +24,5 @@ public class Permission extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @OneToMany(mappedBy = "permission", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<RolePermission> rolePermissions = new HashSet<>();
 }
 
