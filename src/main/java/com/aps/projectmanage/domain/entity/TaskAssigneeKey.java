@@ -9,6 +9,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class TaskAssigneeKey implements Serializable {
 
-    private Long taskId;
-    private Long userId;
+    private int taskId;
+    private int userId;
 }

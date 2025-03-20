@@ -13,7 +13,7 @@ public class Role extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @Column(name = "role_value", nullable = false, unique = true)
     private int roleValue;

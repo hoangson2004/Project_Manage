@@ -7,6 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RolePermissionDTO {
-    private Long roleId;
-    private Long permissionId;
+    private int roleId;
+    private int permissionId;
 }

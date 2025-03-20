@@ -4,7 +4,10 @@ import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.domain.entity.User;
 import com.aps.projectmanage.domain.repository.UserRepository;
 import com.aps.projectmanage.exception.GlobalExceptionHandler;
+import com.aps.projectmanage.exception.NotFoundException;
 import com.aps.projectmanage.mapper.UserMapper;
+import com.aps.projectmanage.payload.CreateUserPayload;
+import com.aps.projectmanage.payload.UpdateUserPayload;
 import com.aps.projectmanage.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +23,14 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDTO create(UserDTO userDTO) {
-        User user = userMapper.toEntity(userDTO);
+    public UserDTO create(CreateUserPayload userPayload) {
+        User user = userMapper.toEntity(userPayload);
         user = userRepository.save(user);
         return userMapper.toDTO(user);
     }
 
     @Override
-    public Optional<UserDTO> getById(Long id) {
+    public Optional<UserDTO> getById(int id) {
         return userRepository.findById(id)
                 .map(userMapper::toDTO);
     }
@@ -41,18 +44,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UserDTO userDTO, Long id) {
+    public UserDTO update(UpdateUserPayload userPayload, int id) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+
+        // Cập nhật dữ liệu
+        if (userPayload.getFullName() != null) {
+            existingUser.setFullName(userPayload.getFullName());
+        }
+        if (userPayload.getEmail() != null) {
+            existingUser.setEmail(userPayload.getEmail());
+        }
+        if (userPayload.getPassword() != null) {
+            existingUser.setPassword(userPayload.getPassword());
+        }
 
         return userMapper.toDTO(userRepository.save(existingUser));
     }
 
+
     @Override
-    public void deleteById(Long id) {
+    public int deleteById(int id) {
         if (!userRepository.existsById(id)) {
-            throw new RuntimeException("User not found with id: " + id);
+            throw new NotFoundException();
         }
         userRepository.deleteById(id);
+        return id;
     }
 }

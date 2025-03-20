@@ -9,6 +9,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class ProjectMemberKey implements Serializable {
 
-    private Long projectId;
-    private Long userId;
+    private int projectId;
+    private int userId;
 }
