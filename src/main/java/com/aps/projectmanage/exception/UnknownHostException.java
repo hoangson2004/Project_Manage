@@ -12,4 +12,9 @@ public class UnknownHostException extends RuntimeException{
         this.status = StatusCode.UNAUTHORIZED;
         this.message = "You have to login to see this content";
     }
+
+    public UnknownHostException(String message) {
+        this.status = StatusCode.UNAUTHORIZED;
+        this.message = message;
+    }
 }

@@ -13,7 +13,6 @@ public class BaseResponse<T> {
     private String message;
     private T data;
 
-
     public static <T> BaseResponse<T> failedResponse(String status, String message) {
         return new BaseResponse<>(status, message, null);
     }

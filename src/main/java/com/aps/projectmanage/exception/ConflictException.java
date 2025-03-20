@@ -13,4 +13,9 @@ public class ConflictException extends RuntimeException{
         this.status = StatusCode.CONFLICT;
         this.message = "message";
     }
+
+    public ConflictException(String message) {
+        this.status = StatusCode.CONFLICT;
+        this.message = message;
+    }
 }

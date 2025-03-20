@@ -13,4 +13,9 @@ public class InternalServerException extends RuntimeException{
         this.status = StatusCode.INTERNAL_SERVER_ERROR;
         this.message = "System error, please try again later";
     }
+
+    public InternalServerException(String message) {
+        this.status = StatusCode.INTERNAL_SERVER_ERROR;
+        this.message = message;
+    }
 }

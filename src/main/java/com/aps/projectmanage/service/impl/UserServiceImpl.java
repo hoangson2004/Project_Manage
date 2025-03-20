@@ -23,20 +23,20 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDTO create(CreateUserPayload userPayload) {
+    public UserDTO createUser(CreateUserPayload userPayload) {
         User user = userMapper.toEntity(userPayload);
         user = userRepository.save(user);
         return userMapper.toDTO(user);
     }
 
     @Override
-    public Optional<UserDTO> getById(int id) {
+    public Optional<UserDTO> getUserById(int id) {
         return userRepository.findById(id)
                 .map(userMapper::toDTO);
     }
 
     @Override
-    public List<UserDTO> getAll() {
+    public List<UserDTO> getAllUsers() {
         return userRepository.findAll()
                 .stream()
                 .map(userMapper::toDTO)
@@ -44,9 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO update(UpdateUserPayload userPayload, int id) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException());
+    public UserDTO updateUser(UpdateUserPayload userPayload, int id) {
+        User existingUser = userRepository.findById(id).get();
 
         if (userPayload.getFullName() != null) {
             existingUser.setFullName(userPayload.getFullName());
@@ -63,10 +62,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public int deleteById(int id) {
-        if (!userRepository.existsById(id)) {
-            throw new NotFoundException();
-        }
+    public int deleteUserById(int id) {
+        userRepository.existsById(id);
         User user = userRepository.findById(id).get();
         user.setIsActive(false);
         userRepository.save(user);

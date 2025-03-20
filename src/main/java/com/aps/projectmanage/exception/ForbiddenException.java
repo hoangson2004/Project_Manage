@@ -13,4 +13,9 @@ public class ForbiddenException extends RuntimeException{
         this.status = StatusCode.FORBIDDEN;
         this.message = "You have not permission to access this resource";
     }
+
+    public ForbiddenException(String message) {
+        this.status = StatusCode.FORBIDDEN;
+        this.message = message;
+    }
 }

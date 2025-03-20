@@ -34,6 +34,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     //400
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.error("BadRequestException: {}", ex.getMessage(), ex);
+        BaseResponse<String> errorResponse = BaseResponse.failedResponse(
+                ex.getStatus().getStatusCode(),
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+
+    //400
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
         log.error("BadRequestException: {}", ex.getMessage(), ex);

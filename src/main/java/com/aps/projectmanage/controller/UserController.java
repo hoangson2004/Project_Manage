@@ -16,48 +16,47 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
     UserResponse userResponse = new UserResponse();
 
-    @PostMapping
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserPayload userPayload) {
-        userResponse = userResponse.createUser(
-                userService.create(userPayload));
-        return ResponseEntity.ok(userResponse);
+    @GetMapping
+    public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
+        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
+        response = userResponse.getAllUsers(userService.getAllUsers());
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
         userResponse = userResponse.getUser(
-                userService.getById(id)
+                userService.getUserById(id)
                         .orElseThrow(() -> new NotFoundException()));
         return ResponseEntity.ok(userResponse);
     }
 
-
-    @GetMapping
-    public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
-        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
-        response = userResponse.getAllUsers(userService.getAll());
-        return ResponseEntity.ok(response);
+    @PostMapping
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserPayload userPayload) {
+        userResponse = userResponse.createUser(
+                userService.createUser(userPayload));
+        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserPayload userPayload, @PathVariable int id) {
         userResponse = userResponse.updateUser(
-                userService.update(userPayload, id));
+                userService.updateUser(userPayload, id));
         return ResponseEntity.ok(userResponse);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable int id) {
-        if (!userService.getById(id).isPresent()) {
+        if (!userService.getUserById(id).isPresent()) {
             throw new NotFoundException();
         }
-        userResponse = userResponse.deleteUser(userService.deleteById(id));
+        userResponse = userResponse.deleteUser(userService.deleteUserById(id));
         return ResponseEntity.ok(userResponse);
     }
 

@@ -7,14 +7,15 @@ import lombok.NoArgsConstructor;
 @Getter
 public class NotFoundException extends RuntimeException {
     private final StatusCode status;
+    String message;
 
     public NotFoundException() {
-        super("Not Found content");
+        this.message = "Not Found content";
         this.status = StatusCode.NOT_FOUND;
     }
 
     public NotFoundException(String message) {
-        super(message);
+        this.message = message;
         this.status = StatusCode.NOT_FOUND;
     }
 }

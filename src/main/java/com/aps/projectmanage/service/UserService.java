@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    UserDTO create(CreateUserPayload payload);
-    Optional<UserDTO> getById(int id);
-    List<UserDTO> getAll();
-    UserDTO update(UpdateUserPayload payload, int id);
-    int deleteById(int id);
+    UserDTO createUser(CreateUserPayload payload);
+    Optional<UserDTO> getUserById(int id);
+    List<UserDTO> getAllUsers();
+    UserDTO updateUser(UpdateUserPayload payload, int id);
+    int deleteUserById(int id);
 }
