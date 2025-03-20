@@ -26,6 +26,6 @@ public class Task extends BaseEntity {
     private String description;
 
     @Column(name = "status", nullable = false)
-    private int statusValue = TaskStatus.TODO.getValue();
+    private TaskStatus status = TaskStatus.TODO;
 
 }
