@@ -29,7 +29,7 @@ public abstract class BaseEntity {
     private String updatedBy;
 
     @Column
-    private LocalDateTime deleteAt;
+    private Boolean IsActive = true;
 
     @PrePersist
     public void prePersist() {

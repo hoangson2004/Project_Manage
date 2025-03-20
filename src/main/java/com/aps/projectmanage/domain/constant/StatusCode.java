@@ -16,7 +16,7 @@ public enum StatusCode {
     NOT_FOUND("404 Not Found"),
     CONFLICT("409 Conflict"),
 
-    INTERNAL_SERVER_ERROR("500 Internal Server Error"),
+    INTERNAL_SERVER_ERROR("500 internal Server Error"),
     SERVICE_UNAVAILABLE("503 Service Unavailable");
 
     private final String statusCode;

@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PermissionDTO {
-    private Long id;
+    private int id;
     private PermissionType type;
 }

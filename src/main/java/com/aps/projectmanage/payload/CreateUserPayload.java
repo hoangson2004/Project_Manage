@@ -1,4 +1,4 @@
-package com.aps.projectmanage.domain.dto;
+package com.aps.projectmanage.payload;
 
 import lombok.*;
 
@@ -6,11 +6,9 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-    private int id;
+public class CreateUserPayload{
     private String username;
     private String email;
     private String fullName;
     private String password;
-    private String role;
 }

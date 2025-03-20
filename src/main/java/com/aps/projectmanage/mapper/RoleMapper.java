@@ -11,7 +11,7 @@ public class RoleMapper {
 
     public static Role toEntity(String roleDTO) {
         RoleName roleName = RoleName.fromLabel(roleDTO);
-        return new Role((long) roleName.getValue(), roleName.getValue());
+        return new Role(roleName.getValue(), roleName.getValue());
     }
 }
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskAssignDTO {
-    private Long taskId;
-    private Long userId;
+    private int taskId;
+    private int userId;
     private LocalDateTime createdAt;
 }

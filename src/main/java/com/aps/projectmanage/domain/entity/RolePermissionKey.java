@@ -9,6 +9,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class RolePermissionKey implements Serializable {
 
-    private Long roleId;
-    private Long permissionId;
+    private int roleId;
+    private int permissionId;
 }
