@@ -20,38 +20,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    UserResponse userResponse = new UserResponse();
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserPayload userPayload) {
-        UserResponse userResponse = new UserResponse().createUser(userService.create(userPayload));
+        userResponse = userResponse.createUser(
+                userService.create(userPayload));
         return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
-        return userService.getById(id)
-                .map(user -> ResponseEntity.ok(new UserResponse().getUser(user)))
-                .orElseThrow(() -> new NotFoundException());
+        userResponse = userResponse.getUser(
+                userService.getById(id)
+                        .orElseThrow(() -> new NotFoundException()));
+        return ResponseEntity.ok(userResponse);
     }
 
 
     @GetMapping
     public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
-        return ResponseEntity.ok(new UserResponse().getAllUsers(userService.getAll()));
+        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
+        response = userResponse.getAllUsers(userService.getAll());
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserPayload userPayload, @PathVariable int id) {
-        UserResponse userResponse = new UserResponse().updateUser(userService.update(userPayload, id));
+        userResponse = userResponse.updateUser(
+                userService.update(userPayload, id));
         return ResponseEntity.ok(userResponse);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable int id) {
         if (!userService.getById(id).isPresent()) {
-            throw new NotFoundException("User not found with id: " + id);
+            throw new NotFoundException();
         }
-        return ResponseEntity.ok(new UserResponse().deleteUser(userService.deleteById(id)));
+        userResponse = userResponse.deleteUser(userService.deleteById(id));
+        return ResponseEntity.ok(userResponse);
     }
 
 }

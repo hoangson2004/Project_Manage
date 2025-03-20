@@ -46,9 +46,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UpdateUserPayload userPayload, int id) {
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException());
 
-        // Cập nhật dữ liệu
         if (userPayload.getFullName() != null) {
             existingUser.setFullName(userPayload.getFullName());
         }
@@ -68,7 +67,9 @@ public class UserServiceImpl implements UserService {
         if (!userRepository.existsById(id)) {
             throw new NotFoundException();
         }
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).get();
+        user.setIsActive(false);
+        userRepository.save(user);
         return id;
     }
 }

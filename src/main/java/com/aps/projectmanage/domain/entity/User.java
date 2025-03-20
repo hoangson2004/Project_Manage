@@ -3,11 +3,15 @@ package com.aps.projectmanage.domain.entity;
 import com.aps.projectmanage.domain.constant.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
+@Where(clause = "is_active != false")
 public class User extends BaseEntity {
 
     @Id
