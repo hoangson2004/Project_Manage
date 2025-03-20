@@ -1,15 +1,7 @@
 package com.aps.projectmanage.domain.constant;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-<<<<<<< HEAD
-=======
 import java.util.Arrays;
 
->>>>>>> eef54f1 (fix repo)
-@Getter
-@RequiredArgsConstructor
 public enum RoleName {
     ADMIN(1, "Admin"),
     USER(2, "User"),
@@ -18,19 +10,33 @@ public enum RoleName {
 
     private final int value;
     private final String label;
-<<<<<<< HEAD
-=======
 
+    RoleName(int value, String label) {
+        this.value = value;
+        this.label = label;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    // Tìm RoleName theo giá trị int
     public static RoleName fromValue(int value) {
         return Arrays.stream(RoleName.values())
                 .filter(role -> role.value == value)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Role Value: " + value));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid role value: " + value));
     }
 
-    public static String getLabelByValue(int value) {
-        return fromValue(value).label;
+    // Tìm RoleName theo tên label
+    public static RoleName fromLabel(String label) {
+        return Arrays.stream(RoleName.values())
+                .filter(role -> role.label.equalsIgnoreCase(label))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Invalid role label: " + label));
     }
->>>>>>> eef54f1 (fix repo)
 }
-

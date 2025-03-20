@@ -1,16 +1,14 @@
 package com.aps.projectmanage.domain.entity;
 
-import com.aps.projectmanage.domain.constant.RoleName;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role extends BaseEntity {
 
     @Id
@@ -18,7 +16,7 @@ public class Role extends BaseEntity {
     private Long id;
 
     @Column(name = "role_value", nullable = false, unique = true)
-    private int roleValue = RoleName.USER.getValue();
+    private int roleValue;
 
 }
 

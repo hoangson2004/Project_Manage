@@ -16,6 +16,6 @@ public class Permission extends BaseEntity{
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private int permissionValue;
+    private int permission;
 
 }
