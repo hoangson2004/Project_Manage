@@ -15,9 +15,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnknownHostException.class)
     public ResponseEntity<Object> handleUnknownHostException(UnknownHostException ex) {
         log.error("UnknownHostException: {}", ex.getMessage(), ex);
+        UnknownHostException e = new UnknownHostException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
@@ -26,9 +27,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
         log.error("NotFoundException: {}", ex.getMessage(), ex);
+        NotFoundException e = new NotFoundException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
@@ -37,9 +39,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.error("BadRequestException: {}", ex.getMessage(), ex);
+        MethodArgumentNotValidException e = new MethodArgumentNotValidException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -49,9 +52,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
         log.error("BadRequestException: {}", ex.getMessage(), ex);
+        BadRequestException e = new BadRequestException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -60,9 +64,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex) {
         log.error("UnauthorizedException: {}", ex.getMessage(), ex);
+        UnauthorizedException e = new UnauthorizedException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
@@ -71,9 +76,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ResponseEntity<Object> handleForbiddenException(ForbiddenException ex) {
         log.error("ForbiddenException: {}", ex.getMessage(), ex);
+        ForbiddenException e = new ForbiddenException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
@@ -82,9 +88,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Object> handleConflictException(ConflictException ex) {
         log.error("ConflictException: {}", ex.getMessage(), ex);
+        ConflictException e = new ConflictException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                ex.getStatus().getStatusCode(),
-                ex.getMessage()
+                e.getStatus().getStatusCode(),
+                e.getMessage()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }

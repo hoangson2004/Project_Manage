@@ -11,7 +11,7 @@ public class ConflictException extends RuntimeException{
 
     public ConflictException() {
         this.status = StatusCode.CONFLICT;
-        this.message = "message";
+        this.message = "Data conflict";
     }
 
     public ConflictException(String message) {

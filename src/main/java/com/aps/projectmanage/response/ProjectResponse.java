@@ -35,7 +35,8 @@ public class ProjectResponse extends BaseResponse<ProjectDTO> {
     }
 
     public ProjectResponse getProject(ProjectDTO data) {
-        return new ProjectResponse(StatusCode.SUCCESS.getStatusCode(),
+        return new ProjectResponse(
+                StatusCode.SUCCESS.getStatusCode(),
                 "Fetched project successfully",
                 data);
     }

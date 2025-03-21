@@ -8,6 +8,7 @@ import com.aps.projectmanage.domain.entity.ProjectMember;
 import com.aps.projectmanage.domain.entity.Role;
 import com.aps.projectmanage.domain.entity.User;
 import com.aps.projectmanage.payload.CreateUserPayload;
+import com.aps.projectmanage.payload.UpdateUserPayload;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,12 @@ public class UserMapper {
     }
 
     public User toEntity(CreateUserPayload userPayload) {
+        User user = modelMapper.map(userPayload, User.class);
+        user.setRole(new Role( RoleName.USER.getValue(), RoleName.USER.getValue()));
+        return user;
+    }
+
+    public User toEntity(UpdateUserPayload userPayload) {
         User user = modelMapper.map(userPayload, User.class);
         user.setRole(new Role( RoleName.USER.getValue(), RoleName.USER.getValue()));
         return user;

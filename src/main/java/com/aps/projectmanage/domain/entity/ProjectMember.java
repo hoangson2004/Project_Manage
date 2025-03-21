@@ -11,7 +11,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name = "project_members")
 @SQLDelete(sql = "UPDATE project_members SET is_active=false WHERE userId = ? AND projectId=?")
-//@Where(clause = "is_active != false")
+@Where(clause = "is_active != false")
 public class ProjectMember extends BaseEntity{
 
     @EmbeddedId
