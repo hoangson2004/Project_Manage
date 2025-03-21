@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProjectMemberDTO {
-    private Project project;
-    private User user;
+    private String project;
+    private String user;
     private LocalDateTime createdAt;
+    private String role;
 }

@@ -1,12 +1,14 @@
 package com.aps.projectmanage.controller;
 
 
+import com.aps.projectmanage.domain.dto.ProjectDTO;
 import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.exception.NotFoundException;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.UpdateUserPayload;
 import com.aps.projectmanage.response.BaseResponse;
 import com.aps.projectmanage.response.UserResponse;
+import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final ProjectMemberService projectMemberService;
     UserResponse userResponse = new UserResponse();
 
     @GetMapping
     public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
         BaseResponse<List<UserDTO>> response = new BaseResponse<>();
         response = userResponse.getAllUsers(userService.getAllUsers());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/project/{id}")
+    public ResponseEntity<BaseResponse<List<UserDTO>>> getUsersByProjectId(@PathVariable int id) {
+        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
+        response = userResponse.getAllUsers(projectMemberService.getAllUsersByProjectId(id));
         return ResponseEntity.ok(response);
     }
 

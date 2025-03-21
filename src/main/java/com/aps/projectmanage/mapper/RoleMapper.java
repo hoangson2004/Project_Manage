@@ -13,5 +13,10 @@ public class RoleMapper {
         RoleName roleName = RoleName.fromLabel(roleDTO);
         return new Role(roleName.getValue(), roleName.getValue());
     }
+
+    public static int toInt(String roleDTO) {
+        RoleName roleName = RoleName.fromLabel(roleDTO);
+        return roleName.getValue();
+    }
 }
 

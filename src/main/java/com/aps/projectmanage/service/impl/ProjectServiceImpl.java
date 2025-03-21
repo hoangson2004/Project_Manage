@@ -29,7 +29,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectDTO getProjectById(int id) {
-        Project project = projectRepository.findById(id).get();
+        Project project = projectRepository.getById(id);
         ProjectDTO projectDTO = new ProjectDTO();
         modelMapper.map(project, projectDTO);
         return projectDTO;

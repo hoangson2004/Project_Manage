@@ -13,8 +13,8 @@ public class TaskDTO {
     private int id;
     private String name;
     private String description;
-    private ProjectDTO project;
-    private TaskStatus status;
+    private String project;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

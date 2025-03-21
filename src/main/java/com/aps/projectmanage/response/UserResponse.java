@@ -1,6 +1,7 @@
 package com.aps.projectmanage.response;
 
 import com.aps.projectmanage.domain.constant.StatusCode;
+import com.aps.projectmanage.domain.dto.ProjectMemberDTO;
 import com.aps.projectmanage.domain.dto.UserDTO;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,14 @@ public class UserResponse extends BaseResponse<UserDTO> {
     }
 
     public BaseResponse<List<UserDTO>> getAllUsers(List<UserDTO> users) {
+        return new BaseResponse<>(
+                StatusCode.SUCCESS.getStatusCode(),
+                "Fetched all users successfully",
+                users
+        );
+    }
+
+    public BaseResponse<List<ProjectMemberDTO>> getAllMembers(List<ProjectMemberDTO> users) {
         return new BaseResponse<>(
                 StatusCode.SUCCESS.getStatusCode(),
                 "Fetched all users successfully",

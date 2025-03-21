@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO updateUser(UpdateUserPayload userPayload, int id) {
-        User existingUser = userRepository.findById(id).get();
+        User existingUser = userRepository.getById(id);
 
         if (userPayload.getFullName() != null) {
             existingUser.setFullName(userPayload.getFullName());
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteUserById(int id) {
         userRepository.existsById(id);
-        User user = userRepository.findById(id).get();
+        User user = userRepository.getById(id);
         user.setIsActive(false);
         userRepository.save(user);
         return id;

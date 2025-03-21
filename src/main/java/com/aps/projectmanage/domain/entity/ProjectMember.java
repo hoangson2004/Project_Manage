@@ -3,11 +3,15 @@ package com.aps.projectmanage.domain.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "project_members")
+@SQLDelete(sql = "UPDATE project_members SET is_active=false WHERE userId = ? AND projectId=?")
+//@Where(clause = "is_active != false")
 public class ProjectMember extends BaseEntity{
 
     @EmbeddedId

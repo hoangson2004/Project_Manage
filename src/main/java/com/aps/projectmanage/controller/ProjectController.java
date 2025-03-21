@@ -5,6 +5,7 @@ import com.aps.projectmanage.exception.NotFoundException;
 import com.aps.projectmanage.payload.ProjectPayload;
 import com.aps.projectmanage.response.BaseResponse;
 import com.aps.projectmanage.response.ProjectResponse;
+import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final ProjectMemberService projectMemberService;
     private ProjectResponse projectResponse = new ProjectResponse();
 
     @GetMapping
@@ -27,6 +29,14 @@ public class ProjectController {
         response = projectResponse.getAllProjects(projectService.getAllProjects());
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<BaseResponse<List<ProjectDTO>>> getProjectsByUserId(@PathVariable int id) {
+        BaseResponse<List<ProjectDTO>> response = new BaseResponse<>();
+        response = projectResponse.getAllProjects(projectMemberService.getAllProjectsByUserId(id));
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ProjectResponse> getProjectById(@PathVariable int id) {
@@ -43,8 +53,8 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id, @Valid @RequestBody ProjectPayload payload) {
-        projectResponse = projectResponse.createProject(
-                projectService.getProjectById(id));
+        projectResponse = projectResponse.updateProject(
+                projectService.updateProject(id,payload));
         return ResponseEntity.ok(projectResponse);
     }
 

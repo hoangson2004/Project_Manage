@@ -24,7 +24,6 @@ public enum RoleName {
         return label;
     }
 
-    // Tìm RoleName theo giá trị int
     public static RoleName fromValue(int value) {
         return Arrays.stream(RoleName.values())
                 .filter(role -> role.value == value)
@@ -32,7 +31,6 @@ public enum RoleName {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid role value: " + value));
     }
 
-    // Tìm RoleName theo tên label
     public static RoleName fromLabel(String label) {
         return Arrays.stream(RoleName.values())
                 .filter(role -> role.label.equalsIgnoreCase(label))
