@@ -4,11 +4,15 @@ import com.aps.projectmanage.domain.constant.PermissionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name = "permissions")
 @Getter
 @Setter
+@SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
+@Where(clause = "is_active != false")
 public class Permission extends BaseEntity{
 
     @Id

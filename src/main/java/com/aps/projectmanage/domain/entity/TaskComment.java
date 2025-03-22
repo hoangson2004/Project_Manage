@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "task_comments")
+
 public class TaskComment extends BaseEntity {
 
     @Id

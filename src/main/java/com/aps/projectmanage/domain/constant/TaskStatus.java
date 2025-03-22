@@ -6,7 +6,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum TaskStatus {
-    TODO,
-    IN_PROGRESS,
-    DONE;
+    TODO("To Do"),
+    IN_PROGRESS("In Progress"),
+    DONE("Completed");
+
+    private final String displayName;
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
 }
