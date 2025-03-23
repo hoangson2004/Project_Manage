@@ -11,7 +11,6 @@ import org.hibernate.annotations.Where;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete( sql = "UPDATE users SET is_active=false WHERE id = ?")
 public class Role extends BaseEntity {
 
     @Id

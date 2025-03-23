@@ -11,8 +11,6 @@ import org.hibernate.annotations.Where;
 @Table(name = "permissions")
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
-@Where(clause = "is_active != false")
 public class Permission extends BaseEntity{
 
     @Id
@@ -20,6 +18,5 @@ public class Permission extends BaseEntity{
     private int id;
 
     @Column(unique = true, nullable = false)
-    private int permission;
-
+    String name;
 }

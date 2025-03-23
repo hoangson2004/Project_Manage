@@ -12,5 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PermissionDTO {
     private int id;
-    private String type;
+    private String name;
 }

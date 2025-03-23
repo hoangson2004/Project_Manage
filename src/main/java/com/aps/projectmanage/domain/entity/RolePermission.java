@@ -10,8 +10,8 @@ import org.hibernate.annotations.Where;
 @Setter
 @Entity
 @Table(name = "role_permissions")
-@SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
-@Where(clause = "is_active != false")
+
+
 public class RolePermission extends BaseEntity{
 
     @EmbeddedId
