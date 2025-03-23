@@ -8,10 +8,8 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskCommentDTO {
+public class CommentDTO {
     private int id;
-    private int taskId;
-    private int userId;
     private String content;
     private LocalDateTime createdAt;
 }
