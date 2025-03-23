@@ -7,6 +7,9 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -28,6 +31,10 @@ public class Task extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TaskAssignee> assignees = new ArrayList<>();
+
 
     @Column(name = "status", nullable = false)
     private TaskStatus status = TaskStatus.TODO;

@@ -56,10 +56,6 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         id.setUserId(payload.getUserId());
         id.setProjectId(projectId);
 
-        if (projectMemberRepository.existsById(id)) {
-            throw new ConflictException();
-        }
-
         User user = userRepository.getById(payload.getUserId());
 
         Project project = projectRepository.getById(projectId);
