@@ -12,6 +12,7 @@ import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class UserController {
     UserResponse userResponse = new UserResponse();
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
         BaseResponse<List<UserDTO>> response = new BaseResponse<>();
         response = userResponse.getAllUsers(userService.getAllUsers());
@@ -33,6 +35,7 @@ public class UserController {
     }
 
     @GetMapping("/project/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<List<UserDTO>>> getUsersByProjectId(@PathVariable int id) {
         BaseResponse<List<UserDTO>> response = new BaseResponse<>();
         response = userResponse.getAllUsers(projectMemberService.getAllUsersByProjectId(id));
@@ -48,6 +51,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserPayload userPayload) {
         userResponse = userResponse.createUser(
                 userService.createUser(userPayload));
@@ -55,6 +59,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserPayload userPayload, @PathVariable int id) {
         userResponse = userResponse.updateUser(
                 userService.updateUser(userPayload, id));
@@ -62,6 +67,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable int id) {
         if (!userService.getUserById(id).isPresent()) {
             throw new NotFoundException();

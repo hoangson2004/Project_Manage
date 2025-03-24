@@ -7,6 +7,7 @@ import com.aps.projectmanage.response.MemberResponse;
 import com.aps.projectmanage.service.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -18,6 +19,7 @@ public class ProjectMemberController {
     private final ProjectMemberService projectMemberService;
 
     @PostMapping("/project/{projectId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MemberResponse> addUserToProject(
             @PathVariable int projectId,
             @RequestBody CreateMemberPayload payload) {
@@ -30,6 +32,7 @@ public class ProjectMemberController {
 
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MemberResponse> removeUserFromProject(
             @RequestParam int projectId,
             @RequestParam int userId) {

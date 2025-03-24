@@ -8,6 +8,7 @@ import com.aps.projectmanage.service.PermissionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class PermissionController {
     }
 
     @PutMapping("/{roleLabel}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PermissionResponse> updatePermissionsForRole(
             @PathVariable String roleLabel,
             @Valid @RequestBody PermissionPayload payload) {

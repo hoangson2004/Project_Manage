@@ -10,6 +10,7 @@ import com.aps.projectmanage.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ProjectController {
     private ProjectResponse projectResponse = new ProjectResponse();
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<BaseResponse<List<ProjectDTO>>> getAllProjects() {
         BaseResponse<List<ProjectDTO>> response = new BaseResponse<>();
         response = projectResponse.getAllProjects(projectService.getAllProjects());
@@ -46,12 +48,14 @@ public class ProjectController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectPayload payload) {
         projectResponse = projectResponse.createProject(projectService.createProject(payload));
         return ResponseEntity.ok(projectResponse);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id, @Valid @RequestBody ProjectPayload payload) {
         projectResponse = projectResponse.updateProject(
                 projectService.updateProject(id,payload));
@@ -59,6 +63,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ProjectResponse> deleteProject(@PathVariable int id) {
         if (projectService.getProjectById(id)==null) {
             throw new NotFoundException();
