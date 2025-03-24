@@ -19,7 +19,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private AuthResponse authResponse;
+    private AuthResponse authResponse = new AuthResponse();
     private UserResponse userResponse = new UserResponse();
 
     @PostMapping("/register")

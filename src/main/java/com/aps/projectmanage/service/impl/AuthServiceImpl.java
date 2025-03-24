@@ -23,6 +23,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public UserDTO register(CreateUserPayload payload) {
         User user = userMapper.toEntity(payload);
+        user.setPassword(passwordEncoder.encode(payload.getPassword()));
         user = userRepository.save(user);
         return userMapper.toDTO(user);
     }

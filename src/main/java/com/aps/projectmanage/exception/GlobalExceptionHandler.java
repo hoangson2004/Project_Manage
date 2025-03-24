@@ -18,7 +18,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         UnknownHostException e = new UnknownHostException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         NotFoundException e = new NotFoundException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         MethodArgumentNotValidException e = new MethodArgumentNotValidException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         BadRequestException e = new BadRequestException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         UnauthorizedException e = new UnauthorizedException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ForbiddenException e = new ForbiddenException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
     }
@@ -91,7 +91,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ConflictException e = new ConflictException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
@@ -104,7 +104,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
                 e.getStatus().getStatusCode(),
-                e.getMessage()
+                ex.getMessage()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
