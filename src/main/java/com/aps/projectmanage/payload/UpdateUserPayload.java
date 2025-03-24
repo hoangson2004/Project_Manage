@@ -1,16 +1,12 @@
 package com.aps.projectmanage.payload;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Valid
+@Data
 public class UpdateUserPayload {
 
     @NotBlank(message = "Email cannot be blank")

@@ -1,15 +1,11 @@
 package com.aps.projectmanage.payload;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Valid
+@Data
 public class CommentPayload {
     @NotBlank
     private String content;

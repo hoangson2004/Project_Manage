@@ -10,6 +10,8 @@ import org.hibernate.annotations.Where;
 @Setter
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
 @SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")
 @Where(clause = "is_active != false")
 public class User extends BaseEntity {
@@ -33,5 +35,6 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = true)
     private Role role;
+
 
 }

@@ -1,14 +1,10 @@
 package com.aps.projectmanage.payload;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.Valid;
+import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Valid
+@Data
 public class UpdateTaskPayload {
     private String status;
 }

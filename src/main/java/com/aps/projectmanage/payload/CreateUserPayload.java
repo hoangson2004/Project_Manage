@@ -1,12 +1,11 @@
 package com.aps.projectmanage.payload;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Valid
+@Data
 public class CreateUserPayload{
     @NotBlank
     private String username;
