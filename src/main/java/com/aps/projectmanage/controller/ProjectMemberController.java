@@ -1,9 +1,6 @@
 package com.aps.projectmanage.controller;
 
-import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.payload.CreateMemberPayload;
-import com.aps.projectmanage.response.BaseResponse;
-import com.aps.projectmanage.response.MemberResponse;
 import com.aps.projectmanage.service.ProjectMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,31 +11,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
-public class ProjectMemberController {
+public class ProjectMemberController extends BaseController {
 
     private final ProjectMemberService projectMemberService;
 
     @PostMapping("/project/{projectId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MemberResponse> addUserToProject(
+    public ResponseEntity<?> addUserToProject(
             @PathVariable int projectId,
             @RequestBody CreateMemberPayload payload) {
 
-        UserDTO member = projectMemberService.addUserToProject(projectId, payload);
-        MemberResponse response = new MemberResponse();
-        response = response.addMember(member);
-        return ResponseEntity.ok(response);
+        return handleSuccess("Add user success",
+                projectMemberService.addUserToProject(projectId, payload));
     }
 
 
     @DeleteMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<MemberResponse> removeUserFromProject(
+    public ResponseEntity<?> removeUserFromProject(
             @RequestParam int projectId,
             @RequestParam int userId) {
-        MemberResponse response = new MemberResponse();
-        response = response.deleteMember(projectMemberService.deleteMemberFromProject(projectId, userId));
-        return ResponseEntity.ok(response);
+
+        return handleSuccess("Delete user id: " + userId + " from project id: " + projectId + " success",
+                projectMemberService.deleteMemberFromProject(projectId, userId));
     }
 
 }

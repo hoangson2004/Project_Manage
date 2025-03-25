@@ -1,74 +1,61 @@
 package com.aps.projectmanage.controller;
 
-import com.aps.projectmanage.domain.dto.ProjectDTO;
-import com.aps.projectmanage.exception.NotFoundException;
+import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.payload.ProjectPayload;
-import com.aps.projectmanage.response.BaseResponse;
-import com.aps.projectmanage.response.ProjectResponse;
 import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.ProjectService;
+import com.aps.projectmanage.util.HasProjectPermission;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/projects")
 @RequiredArgsConstructor
-public class ProjectController {
+public class ProjectController extends BaseController {
 
     private final ProjectService projectService;
     private final ProjectMemberService projectMemberService;
-    private ProjectResponse projectResponse = new ProjectResponse();
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<List<ProjectDTO>>> getAllProjects() {
-        BaseResponse<List<ProjectDTO>> response = new BaseResponse<>();
-        response = projectResponse.getAllProjects(projectService.getAllProjects());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getAllProjects() {
+        return handleSuccess("Get all projects", projectService.getAllProjects());
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<BaseResponse<List<ProjectDTO>>> getProjectsByUserId(@PathVariable int id) {
-        BaseResponse<List<ProjectDTO>> response = new BaseResponse<>();
-        response = projectResponse.getAllProjects(projectMemberService.getAllProjectsByUserId(id));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getProjectsByUserId(@PathVariable int id) {
+        return handleSuccess("Get all project by user id: " + id + " success",
+                projectMemberService.getAllProjectsByUserId(id));
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable int id) {
-        projectResponse = projectResponse.getProject(
+    public ResponseEntity<?> getProjectById(@PathVariable int id) {
+        return handleSuccess("Get project by project id: " + id + " success",
                 projectService.getProjectById(id));
-        return ResponseEntity.ok(projectResponse);
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody ProjectPayload payload) {
-        projectResponse = projectResponse.createProject(projectService.createProject(payload));
-        return ResponseEntity.ok(projectResponse);
+    public ResponseEntity<?> createProject(@Valid @RequestBody ProjectPayload payload) {
+        return handleSuccess(StatusCode.CREATED, "Create project success",
+                projectService.createProject(payload));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProjectResponse> updateProject(@PathVariable int id, @Valid @RequestBody ProjectPayload payload) {
-        projectResponse = projectResponse.updateProject(
-                projectService.updateProject(id,payload));
-        return ResponseEntity.ok(projectResponse);
+    @HasProjectPermission("EDIT_PROJECT")
+    public ResponseEntity<?> updateProject(@PathVariable int id, @Valid @RequestBody ProjectPayload payload) {
+        return handleSuccess("Update project success",
+                projectService.updateProject(id, payload));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProjectResponse> deleteProject(@PathVariable int id) {
-        if (projectService.getProjectById(id)==null) {
-            throw new NotFoundException();
-        }
-        projectResponse = projectResponse.deleteProject(projectService.deleteProject(id));
-        return ResponseEntity.ok(projectResponse);
+    public ResponseEntity<?> deleteProject(@PathVariable int id) {
+        return handleSuccess("Delete project success", projectService.deleteProject(id));
     }
 }

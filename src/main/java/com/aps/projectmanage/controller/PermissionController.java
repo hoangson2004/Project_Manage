@@ -1,9 +1,6 @@
 package com.aps.projectmanage.controller;
 
-import com.aps.projectmanage.domain.dto.PermissionDTO;
 import com.aps.projectmanage.payload.PermissionPayload;
-import com.aps.projectmanage.response.BaseResponse;
-import com.aps.projectmanage.response.PermissionResponse;
 import com.aps.projectmanage.service.PermissionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,39 +8,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/permissions")
 @RequiredArgsConstructor
-public class PermissionController {
+public class PermissionController extends BaseController {
 
     private final PermissionService permissionService;
-    private PermissionResponse permissionResponse = new PermissionResponse();
 
     @GetMapping
-    public ResponseEntity<BaseResponse<List<PermissionDTO>>> getAllPermissions() {
-        BaseResponse<List<PermissionDTO>> response;
-        response = permissionResponse.getAllPermissions(permissionService.getAllPermissions());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getAllPermissions() {
+        return handleSuccess("Get all permissions success", permissionService.getAllPermissions());
     }
 
     @GetMapping("/{roleLabel}")
-    public ResponseEntity<BaseResponse<List<PermissionDTO>>> getPermissionsByRole(@PathVariable String roleLabel) {
-        BaseResponse<List<PermissionDTO>> response;
-        response = permissionResponse.getPermissionsByRole(permissionService.getPermissionsByRole(roleLabel));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getPermissionsByRole(@PathVariable String roleLabel) {
+        return handleSuccess("Get all permissions success", permissionService.getPermissionsByRole(roleLabel));
     }
 
     @PutMapping("/{roleLabel}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PermissionResponse> updatePermissionsForRole(
+    public ResponseEntity<?> updatePermissionsForRole(
             @PathVariable String roleLabel,
             @Valid @RequestBody PermissionPayload payload) {
 
-        List<PermissionDTO> updatedPermissions = permissionService.updatePermissionsByRoleId(
-                roleLabel, payload.getPermissionIds());
-        PermissionResponse response = permissionResponse.updatePermissions(updatedPermissions);
-        return ResponseEntity.ok(response);
+        return handleSuccess("Update Permissions success", permissionService.updatePermissionsByRoleId(
+                roleLabel, payload.getPermissionIds()));
     }
 }

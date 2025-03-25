@@ -3,9 +3,12 @@ package com.aps.projectmanage.service.impl;
 import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.domain.entity.User;
 import com.aps.projectmanage.domain.repository.UserRepository;
+import com.aps.projectmanage.exception.UserNotFoundException;
 import com.aps.projectmanage.mapper.UserMapper;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.LoginPayload;
+import com.aps.projectmanage.response.AuthResponse;
+import com.aps.projectmanage.response.BaseResponse;
 import com.aps.projectmanage.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -21,22 +24,27 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
 
     @Override
-    public UserDTO register(CreateUserPayload payload) {
+    public AuthResponse register(CreateUserPayload payload) {
         User user = userMapper.toEntity(payload);
         user.setPassword(passwordEncoder.encode(payload.getPassword()));
-        user = userRepository.save(user);
-        return userMapper.toDTO(user);
+        userRepository.save(user);
+
+        return AuthResponse.builder()
+                .token(jwtService.generateToken(user))
+                .build();
     }
 
     @Override
-    public String login(LoginPayload payload) {
+    public AuthResponse login(LoginPayload payload) {
         User user = userRepository.findByUsername(payload.getUsername())
-                .orElseThrow(() -> new RuntimeException("User Not Found"));
+                .orElseThrow(() -> new UserNotFoundException("User Not Found"));
 
         if (!passwordEncoder.matches(payload.getPassword(), user.getPassword())) {
-            return "Incorrect password!";
+            throw new UserNotFoundException("Wrong Password");
         }
 
-        return jwtService.generateToken(user.getUsername());
+        return AuthResponse.builder()
+                .token(jwtService.generateToken(user))
+                .build();
     }
 }

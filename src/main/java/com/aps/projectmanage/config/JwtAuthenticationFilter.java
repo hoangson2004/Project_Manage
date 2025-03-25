@@ -1,6 +1,9 @@
 package com.aps.projectmanage.config;
 
+import com.aps.projectmanage.service.impl.CustomUserDetailsService;
 import com.aps.projectmanage.service.impl.JwtService;
+import com.aps.projectmanage.util.CustomUserDetails;
+import com.aps.projectmanage.util.CustomUsernamePasswordAuthenticationToken;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
@@ -12,8 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,7 +26,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -38,8 +39,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String token = authHeader.substring(7); // Cắt bỏ "Bearer "
-        String username = null;
+        String token = authHeader.substring(7);
+        String username = jwtService.extractUsername(token);
+        Integer userId = jwtService.extractUserId(token);
 
         try {
             username = jwtService.extractUsername(token);
@@ -50,11 +52,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            CustomUserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
             if (jwtService.isTokenValid(token, userDetails.getUsername())) {
-                UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                CustomUsernamePasswordAuthenticationToken authToken =
+                        new CustomUsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities(), userDetails.getProjectPermissions());
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

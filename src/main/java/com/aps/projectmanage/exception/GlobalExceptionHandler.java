@@ -1,12 +1,20 @@
 package com.aps.projectmanage.exception;
 
+import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.response.BaseResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.net.UnknownHostException;
 
 @ControllerAdvice
 @Slf4j
@@ -15,97 +23,76 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnknownHostException.class)
     public ResponseEntity<Object> handleUnknownHostException(UnknownHostException ex) {
         log.error("UnknownHostException: {}", ex.getMessage(), ex);
-        UnknownHostException e = new UnknownHostException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.NOT_FOUND.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 
     //404
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
+    @ExceptionHandler(ChangeSetPersister.NotFoundException.class)
+    public ResponseEntity<Object> handleNotFoundException(ChangeSetPersister.NotFoundException ex) {
         log.error("NotFoundException: {}", ex.getMessage(), ex);
-        NotFoundException e = new NotFoundException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.NOT_FOUND.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
-
-    //400
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        log.error("BadRequestException: {}", ex.getMessage(), ex);
-        MethodArgumentNotValidException e = new MethodArgumentNotValidException();
-        BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
-                ex.getMessage()
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
-
 
     //400
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Object> handleBadRequestException(BadRequestException ex) {
         log.error("BadRequestException: {}", ex.getMessage(), ex);
-        BadRequestException e = new BadRequestException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.BAD_REQUEST.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 
     //401
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex) {
+    @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
+    public ResponseEntity<Object> handleUnauthorizedException(HttpClientErrorException.Unauthorized ex) {
         log.error("UnauthorizedException: {}", ex.getMessage(), ex);
-        UnauthorizedException e = new UnauthorizedException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.UNAUTHORIZED.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 
     //403
-    @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<Object> handleForbiddenException(ForbiddenException ex) {
+    @ExceptionHandler(HttpClientErrorException.Forbidden.class)
+    public ResponseEntity<Object> handleForbiddenException(HttpClientErrorException.Forbidden ex) {
         log.error("ForbiddenException: {}", ex.getMessage(), ex);
-        ForbiddenException e = new ForbiddenException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.FORBIDDEN.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 
     //409
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Object> handleConflictException(ConflictException ex) {
+    @ExceptionHandler(HttpClientErrorException.Conflict.class)
+    public ResponseEntity<Object> handleConflictException(HttpClientErrorException.Conflict ex) {
         log.error("ConflictException: {}", ex.getMessage(), ex);
-        ConflictException e = new ConflictException();
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.CONFLICT.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 
     //500
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllExceptions(Exception ex) {
         log.error("Exception: {}", ex.getMessage(), ex);
-        InternalServerException e = new InternalServerException();
-
         BaseResponse<String> errorResponse = BaseResponse.failedResponse(
-                e.getStatus().getStatusCode(),
+                StatusCode.INTERNAL_SERVER_ERROR.getStatusCode(),
                 ex.getMessage()
         );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(errorResponse);
     }
 }

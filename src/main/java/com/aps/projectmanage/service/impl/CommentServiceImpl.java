@@ -23,10 +23,10 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
 
     @Override
-    public CommentDTO createComment(int taskId, CommentPayload payload) {
+    public CommentDTO createComment(int userId, int taskId, CommentPayload payload) {
         Comment comment = modelMapper.map(payload, Comment.class);
         comment.setTask(taskRepository.getById(taskId));
-        comment.setUser(userRepository.getById(1));
+        comment.setUser(userRepository.getById(userId));
         commentRepository.save(comment);
         return modelMapper.map(comment, CommentDTO.class);
     }

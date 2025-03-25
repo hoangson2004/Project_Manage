@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -35,6 +38,5 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = true)
     private Role role;
-
 
 }

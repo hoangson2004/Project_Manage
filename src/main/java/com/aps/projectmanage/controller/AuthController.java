@@ -1,37 +1,32 @@
 package com.aps.projectmanage.controller;
 
+import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.LoginPayload;
 import com.aps.projectmanage.response.AuthResponse;
-import com.aps.projectmanage.response.UserResponse;
 import com.aps.projectmanage.service.AuthService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Map;
-
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController extends BaseController<AuthResponse> {
+
     private final AuthService authService;
-    private AuthResponse authResponse = new AuthResponse();
-    private UserResponse userResponse = new UserResponse();
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@RequestBody CreateUserPayload payload) {
-        userResponse = userResponse.createUser(authService.register(payload));
-        return ResponseEntity.ok(userResponse);
-
+    public ResponseEntity<?> register(@RequestBody CreateUserPayload payload) {
+        return handleSuccess(StatusCode.CREATED, "Register success", authService.register(payload));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginPayload payload) {
-        authResponse = authResponse.login(authService.login(payload));
-        return ResponseEntity.ok(authResponse);
+    public ResponseEntity<?> login(@RequestBody LoginPayload payload) {
+        log.info("ResponseEntity trả về: {}", handleSuccess("Login success", authService.login(payload)));
+        return handleSuccess("Login success", authService.login(payload));
     }
 }

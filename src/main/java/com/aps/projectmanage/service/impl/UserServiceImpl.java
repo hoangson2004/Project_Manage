@@ -10,6 +10,7 @@ import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.UpdateUserPayload;
 import com.aps.projectmanage.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +22,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO createUser(CreateUserPayload userPayload) {
         User user = userMapper.toEntity(userPayload);
+        user.setPassword(passwordEncoder.encode(userPayload.getPassword()));
         user = userRepository.save(user);
         return userMapper.toDTO(user);
     }

@@ -1,57 +1,44 @@
 package com.aps.projectmanage.controller;
 
-import com.aps.projectmanage.domain.dto.TaskDTO;
+import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.payload.CreateTaskPayload;
 import com.aps.projectmanage.payload.UpdateTaskPayload;
-import com.aps.projectmanage.response.BaseResponse;
-import com.aps.projectmanage.response.TaskResponse;
 import com.aps.projectmanage.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/tasks")
 @RequiredArgsConstructor
-public class TaskController {
+public class TaskController extends BaseController {
     private final TaskService taskService;
-    private TaskResponse taskResponse = new TaskResponse();
 
     @GetMapping
-    public ResponseEntity<BaseResponse<List<TaskDTO>>> getAllTaskByProjectId(@RequestParam int projectId) {
-        BaseResponse<List<TaskDTO>> response = new BaseResponse<>();
-        response = taskResponse.getAllTasks(taskService.getAllTasksByProjectId(projectId));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getAllTaskByProjectId(@RequestParam int projectId) {
+        return handleSuccess("Get all task by project id: " + projectId + "success",
+                taskService.getAllTasksByProjectId(projectId));
     }
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponse> getTaskById(@PathVariable int id) {
-        TaskDTO taskDTO = taskService.getTaskById(id);
-        taskResponse = taskResponse.getTask(taskDTO);
-        return ResponseEntity.ok(taskResponse);
+    public ResponseEntity<?> getTaskById(@PathVariable int id) {
+        return handleSuccess("Get task by id success", taskService.getTaskById(id));
     }
 
     @PostMapping
-    public ResponseEntity<TaskResponse> createTask(@RequestParam int projectId,@RequestBody CreateTaskPayload payload) {
-        taskResponse = taskResponse.createTask(
+    public ResponseEntity<?> createTask(@RequestParam int projectId,@RequestBody CreateTaskPayload payload) {
+        return handleSuccess(StatusCode.CREATED, "Create task success",
                 taskService.createTask(payload, projectId));
-        return ResponseEntity.ok(taskResponse);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@RequestBody UpdateTaskPayload updateTaskPayload, @PathVariable int id) {
-        TaskDTO updatedTask = taskService.updateTask(id, updateTaskPayload);
-        taskResponse = taskResponse.updateTask(updatedTask);
-        return ResponseEntity.ok(taskResponse);
+    public ResponseEntity<?> updateTask(@RequestBody UpdateTaskPayload updateTaskPayload, @PathVariable int id) {
+        return handleSuccess("Update task success", taskService.updateTask(id, updateTaskPayload));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<TaskResponse> deleteTask(@PathVariable int id) {
-        taskResponse = taskResponse.deleteTask(taskService.deleteTask(id));
-        return ResponseEntity.ok(taskResponse);
+    public ResponseEntity<?> deleteTask(@PathVariable int id) {
+        return handleSuccess("Delete task success", taskService.deleteTask(id));
     }
 
 }

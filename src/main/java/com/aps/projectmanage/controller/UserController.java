@@ -1,79 +1,67 @@
 package com.aps.projectmanage.controller;
 
 
-import com.aps.projectmanage.domain.dto.ProjectDTO;
-import com.aps.projectmanage.domain.dto.UserDTO;
-import com.aps.projectmanage.exception.NotFoundException;
+import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.UpdateUserPayload;
-import com.aps.projectmanage.response.BaseResponse;
-import com.aps.projectmanage.response.UserResponse;
 import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.UserService;
+import com.aps.projectmanage.util.SercurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController extends BaseController {
     private final UserService userService;
     private final ProjectMemberService projectMemberService;
-    UserResponse userResponse = new UserResponse();
 
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<List<UserDTO>>> getAllUsers() {
-        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
-        response = userResponse.getAllUsers(userService.getAllUsers());
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getAllUsers() {
+        return handleSuccess("Get all users", userService.getAllUsers());
     }
 
     @GetMapping("/project/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<BaseResponse<List<UserDTO>>> getUsersByProjectId(@PathVariable int id) {
-        BaseResponse<List<UserDTO>> response = new BaseResponse<>();
-        response = userResponse.getAllUsers(projectMemberService.getAllUsersByProjectId(id));
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> getUsersByProjectId(@PathVariable int id) {
+        return handleSuccess("Get users by project id:" + id + "success",
+                projectMemberService.getAllUsersByProjectId(id));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable int id) {
-        userResponse = userResponse.getUser(
-                userService.getUserById(id)
-                        .orElseThrow(() -> new NotFoundException()));
-        return ResponseEntity.ok(userResponse);
+    public ResponseEntity<?> getUserById(@PathVariable int id) {
+        return handleSuccess("Get user by id success", userService.getUserById(id));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserPayload userPayload) {
-        userResponse = userResponse.createUser(
+    public ResponseEntity<?> createUser(@RequestBody CreateUserPayload userPayload) {
+        return handleSuccess(StatusCode.CREATED, "Create user success",
                 userService.createUser(userPayload));
-        return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserPayload userPayload, @PathVariable int id) {
-        userResponse = userResponse.updateUser(
-                userService.updateUser(userPayload, id));
-        return ResponseEntity.ok(userResponse);
+    public ResponseEntity<?> updateUser(
+            @RequestBody UpdateUserPayload userPayload, @PathVariable int id) {
+        return handleSuccess("Update user success", userService.updateUser(userPayload, id));
+    }
+
+    @PutMapping("/myaccount")
+    public ResponseEntity<?> updateMyAccount(@RequestBody UpdateUserPayload payload) {
+        Integer userId = SercurityUtil.getCurrentUserId();
+        return handleSuccess("Update user success", userService.updateUser(payload,userId));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<UserResponse> deleteUser(@PathVariable int id) {
-        if (!userService.getUserById(id).isPresent()) {
-            throw new NotFoundException();
-        }
-        userResponse = userResponse.deleteUser(userService.deleteUserById(id));
-        return ResponseEntity.ok(userResponse);
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
+        return handleSuccess("Delete user success", deleteUser(userService.deleteUserById(id)));
     }
 
 }
