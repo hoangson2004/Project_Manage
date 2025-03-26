@@ -2,6 +2,7 @@ package com.aps.projectmanage.controller;
 
 import com.aps.projectmanage.payload.CreateMemberPayload;
 import com.aps.projectmanage.service.ProjectMemberService;
+import com.aps.projectmanage.util.HasProjectPermission;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,7 +28,7 @@ public class ProjectMemberController extends BaseController {
 
 
     @DeleteMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @HasProjectPermission("MANAGE_MEMBER")
     public ResponseEntity<?> removeUserFromProject(
             @RequestParam int projectId,
             @RequestParam int userId) {

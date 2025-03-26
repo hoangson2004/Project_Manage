@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -23,5 +25,4 @@ public class Project extends BaseEntity {
 
     @Column(columnDefinition = "TEXT")
     private String description;
-
 }

@@ -15,5 +15,4 @@ public enum PermissionType {
     EDIT_TASK,
     DELETE_TASK,
     MANAGE_MEMBER;
-
 }

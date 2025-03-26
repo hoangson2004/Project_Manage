@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @Component
 @Aspect
 public class ProjectPermissionAspect {
-
     @Around("@annotation(hasProjectPermission) && args(projectId,..)")
     public Object checkPermission(ProceedingJoinPoint joinPoint, HasProjectPermission hasProjectPermission, Integer projectId) throws Throwable {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
         Map<Integer, List<String>> projectPermissions = userDetails.getProjectPermissions();
         if (!projectPermissions.containsKey(projectId) ||
                 !projectPermissions.get(projectId).contains(hasProjectPermission.value())) {

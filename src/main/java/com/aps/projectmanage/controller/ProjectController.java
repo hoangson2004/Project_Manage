@@ -31,8 +31,8 @@ public class ProjectController extends BaseController {
                 projectMemberService.getAllProjectsByUserId(id));
     }
 
-
     @GetMapping("/{id}")
+    @HasProjectPermission("VIEW_PROJECT")
     public ResponseEntity<?> getProjectById(@PathVariable int id) {
         return handleSuccess("Get project by project id: " + id + " success",
                 projectService.getProjectById(id));
@@ -46,7 +46,6 @@ public class ProjectController extends BaseController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     @HasProjectPermission("EDIT_PROJECT")
     public ResponseEntity<?> updateProject(@PathVariable int id, @Valid @RequestBody ProjectPayload payload) {
         return handleSuccess("Update project success",

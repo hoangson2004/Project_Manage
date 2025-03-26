@@ -16,11 +16,13 @@ public class PermissionController extends BaseController {
     private final PermissionService permissionService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getAllPermissions() {
         return handleSuccess("Get all permissions success", permissionService.getAllPermissions());
     }
 
     @GetMapping("/{roleLabel}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getPermissionsByRole(@PathVariable String roleLabel) {
         return handleSuccess("Get all permissions success", permissionService.getPermissionsByRole(roleLabel));
     }

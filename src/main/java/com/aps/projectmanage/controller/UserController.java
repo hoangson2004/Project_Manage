@@ -6,6 +6,7 @@ import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.UpdateUserPayload;
 import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.UserService;
+import com.aps.projectmanage.util.HasProjectPermission;
 import com.aps.projectmanage.util.SercurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> getUserById(@PathVariable int id) {
         return handleSuccess("Get user by id success", userService.getUserById(id));
     }
@@ -52,16 +54,17 @@ public class UserController extends BaseController {
         return handleSuccess("Update user success", userService.updateUser(userPayload, id));
     }
 
-    @PutMapping("/myaccount")
-    public ResponseEntity<?> updateMyAccount(@RequestBody UpdateUserPayload payload) {
-        Integer userId = SercurityUtil.getCurrentUserId();
-        return handleSuccess("Update user success", userService.updateUser(payload,userId));
-    }
-
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteUser(@PathVariable int id) {
         return handleSuccess("Delete user success", deleteUser(userService.deleteUserById(id)));
     }
 
+    @PutMapping("/myaccount") //updatev2
+    public ResponseEntity<?> updateMyAccount(@RequestBody UpdateUserPayload payload) {
+        Integer userId = SercurityUtil.getCurrentUserId();
+        return handleSuccess("Update user success", userService.updateUser(payload,userId));
+    }
+
+    //getbyidv2
 }
