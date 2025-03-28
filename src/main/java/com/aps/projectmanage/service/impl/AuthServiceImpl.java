@@ -30,7 +30,8 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return AuthResponse.builder()
-                .token(jwtService.generateToken(user))
+                .accessToken(jwtService.generateAccessToken(user))
+                .refreshToken(jwtService.generateRefreshToken(user))
                 .build();
     }
 
@@ -44,7 +45,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return AuthResponse.builder()
-                .token(jwtService.generateToken(user))
+                .accessToken(jwtService.generateAccessToken(user))
+                .refreshToken(jwtService.generateRefreshToken(user))
                 .build();
     }
 }

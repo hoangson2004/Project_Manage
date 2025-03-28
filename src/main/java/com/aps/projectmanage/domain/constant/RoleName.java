@@ -1,28 +1,21 @@
 package com.aps.projectmanage.domain.constant;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
 
+@Getter
+@AllArgsConstructor
 public enum RoleName {
     ADMIN(1, "Admin"),
     USER(2, "User"),
     MEMBER(3, "Member"),
-    PROJECT_MANAGER(4, "Project Manager");
+    PROJECT_MANAGER(4, "Project_Manager");
 
     private final int value;
     private final String label;
-
-    RoleName(int value, String label) {
-        this.value = value;
-        this.label = label;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public String getLabel() {
-        return label;
-    }
 
     public static RoleName fromValue(int value) {
         return Arrays.stream(RoleName.values())

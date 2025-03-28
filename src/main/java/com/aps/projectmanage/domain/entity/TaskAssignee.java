@@ -1,7 +1,9 @@
 package com.aps.projectmanage.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -9,6 +11,8 @@ import org.hibernate.annotations.Where;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "task_assignees")
 @SQLDelete(sql = "UPDATE users SET is_active=false WHERE id = ?")

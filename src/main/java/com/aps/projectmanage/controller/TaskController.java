@@ -1,11 +1,14 @@
 package com.aps.projectmanage.controller;
 
 import com.aps.projectmanage.domain.constant.StatusCode;
+import com.aps.projectmanage.payload.AssignTaskPayload;
 import com.aps.projectmanage.payload.CreateTaskPayload;
 import com.aps.projectmanage.payload.UpdateTaskPayload;
+import com.aps.projectmanage.service.TaskAssigneeService;
 import com.aps.projectmanage.service.TaskService;
 import com.aps.projectmanage.util.HasProjectPermission;
 import com.aps.projectmanage.util.HasTaskPermission;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TaskController extends BaseController {
     private final TaskService taskService;
+    private final TaskAssigneeService taskAssigneeService;
 
     @GetMapping
     @HasProjectPermission("VIEW_PROJECT")
@@ -23,29 +27,34 @@ public class TaskController extends BaseController {
                 taskService.getAllTasksByProjectId(projectId));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{taskId}")
     @HasTaskPermission("VIEW_PROJECT")
-    public ResponseEntity<?> getTaskById(@PathVariable int id) {
-        return handleSuccess("Get task by id success", taskService.getTaskById(id));
+    public ResponseEntity<?> getTaskById(@PathVariable int taskId) {
+        return handleSuccess("Get task by id success", taskService.getTaskById(taskId));
     }
 
     @PostMapping
-    @HasTaskPermission("EDIT_PROJECT")
+    @HasProjectPermission("CREATE_TASK")
     public ResponseEntity<?> createTask(@RequestParam int projectId,@RequestBody CreateTaskPayload payload) {
         return handleSuccess(StatusCode.CREATED, "Create task success",
                 taskService.createTask(payload, projectId));
     }
 
-    @PutMapping("/{id}")
-    @HasTaskPermission("EDIT_PROJECT")
-    public ResponseEntity<?> updateTask(@RequestBody UpdateTaskPayload updateTaskPayload, @PathVariable int id) {
-        return handleSuccess("Update task success", taskService.updateTask(id, updateTaskPayload));
+    @PutMapping("/{taskId}")
+    @HasTaskPermission("EDIT_TASK")
+    public ResponseEntity<?> updateTask(@RequestBody UpdateTaskPayload payload, @PathVariable int taskId) {
+        return handleSuccess("Update task success", taskService.updateTask(taskId, payload));
     }
 
-    @DeleteMapping("/{id}")
-    @HasTaskPermission("EDIT_PROJECT")
-    public ResponseEntity<?> deleteTask(@PathVariable int id) {
-        return handleSuccess("Delete task success", taskService.deleteTask(id));
+    @PostMapping("/{taskId}")
+    @HasTaskPermission("ASSIGN_TASK")
+    public ResponseEntity<?> assignTask(@PathVariable int taskId,@Valid @RequestBody AssignTaskPayload payload) {
+        return handleSuccess("Assign task success", taskAssigneeService.assignTask(taskId, payload));
     }
 
+    @DeleteMapping("/{taskId}")
+    @HasTaskPermission("DELETE_TASK")
+    public ResponseEntity<?> deleteTask(@PathVariable int taskId) {
+        return handleSuccess("Delete task success", taskService.deleteTask(taskId));
+    }
 }

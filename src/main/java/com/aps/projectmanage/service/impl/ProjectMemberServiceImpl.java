@@ -1,6 +1,7 @@
 package com.aps.projectmanage.service.impl;
 
 import com.aps.projectmanage.domain.dto.ProjectDTO;
+import com.aps.projectmanage.domain.dto.ProjectMemberDTO;
 import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.domain.entity.Project;
 import com.aps.projectmanage.domain.entity.ProjectMember;
@@ -13,6 +14,7 @@ import com.aps.projectmanage.exception.ConflictException;
 import com.aps.projectmanage.mapper.ProjectMemberMapper;
 import com.aps.projectmanage.mapper.RoleMapper;
 import com.aps.projectmanage.payload.CreateMemberPayload;
+import com.aps.projectmanage.payload.UpdateMemberPayload;
 import com.aps.projectmanage.service.ProjectMemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +72,20 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
         return projectMemberMapper.toDTO(user,projectMember);
     }
+
+    @Override
+    @Transactional
+    public UserDTO updateMemberRole(int projectId, UpdateMemberPayload payload) {
+        ProjectMemberKey id = new ProjectMemberKey();
+        id.setUserId(payload.getUserId());
+        id.setProjectId(projectId);
+        ProjectMember member = projectMemberRepository.getById(id);
+        member.setRole(RoleMapper.toEntity(payload.getRole()));
+        projectMemberRepository.save(member);
+        return projectMemberMapper.toDTO(member.getUser(), member);
+    }
+
+
 
     @Override
     @Transactional

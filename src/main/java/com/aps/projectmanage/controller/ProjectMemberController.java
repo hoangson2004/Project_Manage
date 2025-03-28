@@ -1,8 +1,10 @@
 package com.aps.projectmanage.controller;
 
 import com.aps.projectmanage.payload.CreateMemberPayload;
+import com.aps.projectmanage.payload.UpdateMemberPayload;
 import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.util.HasProjectPermission;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,14 +18,22 @@ public class ProjectMemberController extends BaseController {
 
     private final ProjectMemberService projectMemberService;
 
-    @PostMapping("/project/{projectId}")
+    @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> addUserToProject(
-            @PathVariable int projectId,
-            @RequestBody CreateMemberPayload payload) {
+            @RequestParam int projectId,
+            @Valid @RequestBody CreateMemberPayload payload) {
 
         return handleSuccess("Add user success",
                 projectMemberService.addUserToProject(projectId, payload));
+    }
+
+    @PutMapping
+    @HasProjectPermission("EDIT_PROJECT")
+    public ResponseEntity<?> updateMember(
+            @RequestParam int projectId,
+            @Valid @RequestBody UpdateMemberPayload payload ) {
+        return handleSuccess("Update member success", projectMemberService.updateMemberRole(projectId,payload));
     }
 
 

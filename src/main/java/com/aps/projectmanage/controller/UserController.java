@@ -66,5 +66,4 @@ public class UserController extends BaseController {
         return handleSuccess("Update user success", userService.updateUser(payload,userId));
     }
 
-    //getbyidv2
 }

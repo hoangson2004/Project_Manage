@@ -10,7 +10,7 @@ public enum PermissionType {
     VIEW_PROJECT,
     EDIT_PROJECT,
     DELETE_PROJECT,
-    MANAGE_USERS,
+    ASSIGN_TASK,
     CREATE_TASK,
     EDIT_TASK,
     DELETE_TASK,
