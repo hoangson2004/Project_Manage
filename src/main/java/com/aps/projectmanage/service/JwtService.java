@@ -1,4 +1,4 @@
-package com.aps.projectmanage.service.impl;
+package com.aps.projectmanage.service;
 
 import com.aps.projectmanage.domain.entity.User;
 import io.jsonwebtoken.*;

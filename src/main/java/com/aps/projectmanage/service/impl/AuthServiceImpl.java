@@ -1,6 +1,5 @@
 package com.aps.projectmanage.service.impl;
 
-import com.aps.projectmanage.domain.dto.UserDTO;
 import com.aps.projectmanage.domain.entity.User;
 import com.aps.projectmanage.domain.repository.UserRepository;
 import com.aps.projectmanage.exception.UserNotFoundException;
@@ -8,10 +7,9 @@ import com.aps.projectmanage.mapper.UserMapper;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.LoginPayload;
 import com.aps.projectmanage.response.AuthResponse;
-import com.aps.projectmanage.response.BaseResponse;
 import com.aps.projectmanage.service.AuthService;
+import com.aps.projectmanage.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

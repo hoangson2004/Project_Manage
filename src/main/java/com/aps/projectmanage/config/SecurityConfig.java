@@ -1,6 +1,6 @@
 package com.aps.projectmanage.config;
 
-import com.aps.projectmanage.service.impl.CustomUserDetailsService;
+import com.aps.projectmanage.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -10,6 +10,7 @@ import com.aps.projectmanage.domain.repository.PermissionRepository;
 import com.aps.projectmanage.domain.repository.RolePermissionRepository;
 import com.aps.projectmanage.domain.repository.RoleRepository;
 import com.aps.projectmanage.service.PermissionService;
+import com.aps.projectmanage.service.RedisService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -27,6 +28,7 @@ public class PermissionServiceImpl implements PermissionService {
     private final RolePermissionRepository rolePermissionRepository;
     private final RoleRepository roleRepository;
     private ModelMapper modelMapper = new ModelMapper();
+    private final RedisService redisService;
 
     @Override
     public List<PermissionDTO> getAllPermissions() {
@@ -57,15 +59,14 @@ public class PermissionServiceImpl implements PermissionService {
         roleName = RoleName.fromLabel(roleLabel);
 
         int roleId = roleName.getValue();
-        Optional<Role> roleOptional = roleRepository.findById(roleId);
+        Role role = roleRepository.findById(roleId).get();
 
         rolePermissionRepository.deleteByRoleId(roleId);
 
-        Role role = roleOptional.get();
         List<RolePermission> newRolePermissions = new ArrayList<>();
 
         for (Integer p : permissionIds) {
-            Optional<Permission> permissionOptional = permissionRepository.findById(p);
+            Permission permission = permissionRepository.findById(p).get();
             RolePermission rolePermission = new RolePermission();
             RolePermissionKey key = new RolePermissionKey();
             key.setRoleId(roleId);
@@ -73,12 +74,14 @@ public class PermissionServiceImpl implements PermissionService {
 
             rolePermission.setId(key);
             rolePermission.setRole(role);
-            rolePermission.setPermission(permissionOptional.get());
+            rolePermission.setPermission(permission);
 
             newRolePermissions.add(rolePermission);
         }
 
         rolePermissionRepository.saveAll(newRolePermissions);
+
+        redisService.clearAllCache();
 
         return newRolePermissions.stream()
                 .map(rp -> modelMapper.map(rp.getPermission(), PermissionDTO.class))

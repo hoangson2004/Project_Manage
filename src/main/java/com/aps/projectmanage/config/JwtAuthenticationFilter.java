@@ -1,7 +1,7 @@
 package com.aps.projectmanage.config;
 
-import com.aps.projectmanage.service.impl.CustomUserDetailsService;
-import com.aps.projectmanage.service.impl.JwtService;
+import com.aps.projectmanage.service.CustomUserDetailsService;
+import com.aps.projectmanage.service.JwtService;
 import com.aps.projectmanage.util.CustomUserDetails;
 import com.aps.projectmanage.util.CustomUsernamePasswordAuthenticationToken;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -13,7 +13,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -57,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (jwtService.isTokenValid(token, userDetails.getUsername())) {
                 CustomUsernamePasswordAuthenticationToken authToken =
                         new CustomUsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities(), userDetails.getProjectPermissions());
+                                userDetails, null, userDetails.getAuthorities(), userDetails.getProjectPermissions(), userDetails.getUserId());
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

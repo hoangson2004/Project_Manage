@@ -5,7 +5,7 @@ import com.aps.projectmanage.response.BaseResponse;
 import com.aps.projectmanage.service.CommentService;
 import com.aps.projectmanage.util.HasProjectPermission;
 import com.aps.projectmanage.util.HasTaskPermission;
-import com.aps.projectmanage.util.SercurityUtil;
+import com.aps.projectmanage.util.SecurityUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class CommentController extends BaseController<Object> {
     @PostMapping("/{taskId}")
     @HasTaskPermission("EDIT_TASK")
     public ResponseEntity<?> createComment(@PathVariable int taskId,@Valid @RequestBody CommentPayload payload) {
-        Integer userId = SercurityUtil.getCurrentUserId();
+        int userId = SecurityUtil.getCurrentUserId();
         return handleSuccess("Create comment success", commentService.createComment(userId, taskId, payload));
     }
 

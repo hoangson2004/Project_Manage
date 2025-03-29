@@ -12,13 +12,18 @@ public class CustomUsernamePasswordAuthenticationToken extends UsernamePasswordA
     @Getter
     private final Map<Integer, List<String>> projectPermissions;
 
+    @Getter
+    private final int userId;
+
     public CustomUsernamePasswordAuthenticationToken(
             Object principal,
             Object credentials,
             Collection<? extends GrantedAuthority> authorities,
-            Map<Integer, List<String>> projectPermissions) {
+            Map<Integer, List<String>> projectPermissions,
+            int userId) {
         super(principal, credentials, authorities);
         this.projectPermissions = projectPermissions;
+        this.userId = userId;
     }
 
 }

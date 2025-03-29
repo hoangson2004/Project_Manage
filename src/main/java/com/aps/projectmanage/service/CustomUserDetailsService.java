@@ -1,6 +1,7 @@
-package com.aps.projectmanage.service.impl;
+package com.aps.projectmanage.service;
 
 import com.aps.projectmanage.domain.constant.RoleName;
+import com.aps.projectmanage.domain.dto.UserCacheData;
 import com.aps.projectmanage.domain.entity.ProjectMember;
 import com.aps.projectmanage.domain.entity.Role;
 import com.aps.projectmanage.domain.entity.User;
@@ -11,7 +12,6 @@ import com.aps.projectmanage.util.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,11 +26,21 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final RolePermissionRepository rolePermissionRepository;
+    private final RedisService redisService;
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        String userId = String.valueOf(user.getId());
+
+        UserCacheData cachedData = redisService.getUserData(userId);
+        if (cachedData != null) {
+            return new CustomUserDetails(user,
+                    cachedData.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet()),
+                    cachedData.getProjectPermissions());
+        }
 
         Set<GrantedAuthority> authorities =  Collections.singleton(
                 new SimpleGrantedAuthority("ROLE_" + RoleName.fromValue(user.getRole().getRoleValue()))
@@ -52,6 +62,15 @@ public class CustomUserDetailsService implements UserDetailsService {
             projectPermissions.put(projectId, permissions);
         }
 
-        return new CustomUserDetails(user, authorities, projectPermissions);
+        CustomUserDetails userDetails = new CustomUserDetails(user, authorities, projectPermissions);
+
+        redisService.saveUserData(userId, projectPermissions,
+                authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
+
+        return userDetails;
+    }
+
+    public void evictUserCache(String userId) {
+        redisService.evictUserCache(userId);
     }
 }

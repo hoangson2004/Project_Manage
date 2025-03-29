@@ -6,8 +6,7 @@ import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.UpdateUserPayload;
 import com.aps.projectmanage.service.ProjectMemberService;
 import com.aps.projectmanage.service.UserService;
-import com.aps.projectmanage.util.HasProjectPermission;
-import com.aps.projectmanage.util.SercurityUtil;
+import com.aps.projectmanage.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +61,7 @@ public class UserController extends BaseController {
 
     @PutMapping("/myaccount") //updatev2
     public ResponseEntity<?> updateMyAccount(@RequestBody UpdateUserPayload payload) {
-        Integer userId = SercurityUtil.getCurrentUserId();
+        Integer userId = SecurityUtil.getCurrentUserId();
         return handleSuccess("Update user success", userService.updateUser(payload,userId));
     }
 

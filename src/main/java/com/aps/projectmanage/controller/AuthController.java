@@ -2,13 +2,12 @@ package com.aps.projectmanage.controller;
 
 import com.aps.projectmanage.domain.constant.StatusCode;
 import com.aps.projectmanage.domain.entity.User;
-import com.aps.projectmanage.domain.repository.UserRepository;
 import com.aps.projectmanage.payload.CreateUserPayload;
 import com.aps.projectmanage.payload.LoginPayload;
 import com.aps.projectmanage.response.AuthResponse;
 import com.aps.projectmanage.service.AuthService;
 import com.aps.projectmanage.service.UserService;
-import com.aps.projectmanage.service.impl.JwtService;
+import com.aps.projectmanage.service.JwtService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

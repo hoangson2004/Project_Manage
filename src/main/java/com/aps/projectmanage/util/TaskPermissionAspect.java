@@ -1,8 +1,7 @@
 package com.aps.projectmanage.util;
 
-import com.aps.projectmanage.domain.entity.Project;
-import com.aps.projectmanage.domain.repository.ProjectRepository;
 import com.aps.projectmanage.domain.repository.TaskRepository;
+import com.aps.projectmanage.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,6 +18,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class TaskPermissionAspect {
+    private final RedisService redisService;
     private final TaskRepository taskRepository;
 
     @Around("@annotation(hasTaskPermission) && args(taskId,..)")
@@ -30,8 +30,9 @@ public class TaskPermissionAspect {
         if (projectId == null) {
             throw new AccessDeniedException("Cannot determine projectId from taskId");
         }
+        String userId = userDetails.getUserId()+"";
 
-        Map<Integer, List<String>> projectPermissions = userDetails.getProjectPermissions();
+        Map<Integer, List<String>> projectPermissions = redisService.getUserData(userId).getProjectPermissions();
         if (!projectPermissions.containsKey(projectId) ||
                 !projectPermissions.get(projectId).contains(hasTaskPermission.value())) {
             throw new AccessDeniedException("Access Denied: " + hasTaskPermission.value());
